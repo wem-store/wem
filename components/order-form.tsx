@@ -294,39 +294,11 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                     Choisissez votre mode de paiement *
                   </label>
 
-                  {/* Mobile Money Options */}
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    {(Object.keys(paymentOptions) as Array<keyof typeof paymentOptions>).map((key) => {
-                      const opt = paymentOptions[key]
-                      const isSelected = formData.paymentMethod === key
-                      return (
-                        <button
-                          key={key}
-                          type="button"
-                          onClick={() => setFormData({ ...formData, paymentMethod: key as PaymentMethod })}
-                          className={`p-3 border-2 rounded-lg text-left transition-all relative ${
-                            isSelected
-                              ? `${opt.borderClass} ${opt.bgClass} shadow-lg scale-[1.03]`
-                              : `border-border hover:${opt.borderClass}/50`
-                          }`}
-                        >
-
-                          <div className="text-xl mb-1">{opt.icon}</div>
-                          <div className="font-bold text-sm text-foreground">{opt.name}</div>
-                          <div className="text-xs text-muted-foreground">{opt.number}</div>
-                          <div className={`text-xs font-bold mt-1 ${opt.textClass}`}>
-                            Livraison: {product.deliveryWave.toLocaleString()} FCFA
-                          </div>
-                        </button>
-                      )
-                    })}
-                  </div>
-
-                  {/* Cash on Delivery */}
+                  {/* Cash on Delivery - Recommended */}
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, paymentMethod: "delivery" })}
-                    className={`w-full p-4 border-2 rounded-lg text-left transition-all relative ${
+                    className={`w-full p-4 border-2 rounded-lg text-left transition-all relative mb-4 ${
                       formData.paymentMethod === "delivery"
                         ? "border-cyan-500 bg-cyan-500/10 shadow-lg scale-[1.02]"
                         : "border-border hover:border-cyan-500/50"
@@ -346,6 +318,33 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                       </div>
                     </div>
                   </button>
+
+                  {/* Mobile Money Options */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {(Object.keys(paymentOptions) as Array<keyof typeof paymentOptions>).map((key) => {
+                      const opt = paymentOptions[key]
+                      const isSelected = formData.paymentMethod === key
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, paymentMethod: key as PaymentMethod })}
+                          className={`p-3 border-2 rounded-lg text-left transition-all relative ${
+                            isSelected
+                              ? `${opt.borderClass} ${opt.bgClass} shadow-lg scale-[1.03]`
+                              : `border-border hover:${opt.borderClass}/50`
+                          }`}
+                        >
+                          <div className="text-xl mb-1">{opt.icon}</div>
+                          <div className="font-bold text-sm text-foreground">{opt.name}</div>
+                          <div className="text-xs text-muted-foreground">{opt.number}</div>
+                          <div className={`text-xs font-bold mt-1 ${opt.textClass}`}>
+                            Livraison: {product.deliveryWave.toLocaleString()} FCFA
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
                 </div>
 
                 {/* Dynamic Payment Instructions */}
