@@ -67,7 +67,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
     name: "",
     phone: "",
     location: "",
-    paymentMethod: "wave" as PaymentMethod,
+    paymentMethod: "delivery" as PaymentMethod,
   })
   const [formSubmitted, setFormSubmitted] = useState(false)
 
@@ -310,11 +310,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                               : `border-border hover:${opt.borderClass}/50`
                           }`}
                         >
-                          {key === "wave" && (
-                            <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
-                              RECOMMANDE
-                            </div>
-                          )}
+
                           <div className="text-xl mb-1">{opt.icon}</div>
                           <div className="font-bold text-sm text-foreground">{opt.name}</div>
                           <div className="text-xs text-muted-foreground">{opt.number}</div>
@@ -330,14 +326,17 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, paymentMethod: "delivery" })}
-                    className={`w-full p-4 border-2 rounded-lg text-left transition-all ${
+                    className={`w-full p-4 border-2 rounded-lg text-left transition-all relative ${
                       formData.paymentMethod === "delivery"
-                        ? "border-zinc-400 bg-zinc-500/10 shadow-lg scale-[1.02]"
-                        : "border-border hover:border-zinc-500/50"
+                        ? "border-cyan-500 bg-cyan-500/10 shadow-lg scale-[1.02]"
+                        : "border-border hover:border-cyan-500/50"
                     }`}
                   >
+                    <div className="absolute -top-2 -right-2 bg-cyan-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+                      RECOMMANDE
+                    </div>
                     <div className="flex items-center gap-3">
-                      <Phone className="w-5 h-5 text-zinc-400" />
+                      <Phone className="w-5 h-5 text-cyan-400" />
                       <div>
                         <div className="font-bold text-foreground">Paiement a la Livraison</div>
                         <div className="text-xs text-muted-foreground">Payez quand vous recevez</div>
