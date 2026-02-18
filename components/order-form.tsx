@@ -32,7 +32,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
     name: "",
     phone: "",
     location: "",
-    paymentMethod: "wave" as PaymentMethod,
+    paymentMethod: "delivery" as PaymentMethod,
   })
   const [formSubmitted, setFormSubmitted] = useState(false)
 
@@ -245,19 +245,36 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                     Choisissez votre mode de paiement *
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {/* Wave - Recommande */}
+                    {/* Paiement a la livraison - RECOMMANDE */}
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, paymentMethod: "delivery" })}
+                      className={`p-3 border-2 rounded-lg text-left transition-all relative col-span-2 md:col-span-3 ${
+                        formData.paymentMethod === "delivery"
+                          ? "border-green-500 bg-green-500/10 shadow-lg scale-[1.02]"
+                          : "border-border hover:border-green-500/50"
+                      }`}
+                    >
+                      <div className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+                        RECOMMANDE
+                      </div>
+                      <div className="font-bold text-lg text-foreground">Paiement a la Livraison</div>
+                      <div className="text-xs text-muted-foreground">Payez quand vous recevez votre commande</div>
+                      <div className="text-xs text-green-400 font-bold mt-1">
+                        Livraison: {product.deliveryCash.toLocaleString()} FCFA
+                      </div>
+                    </button>
+
+                    {/* Wave */}
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, paymentMethod: "wave" })}
-                      className={`p-3 border-2 rounded-lg text-left transition-all relative ${
+                      className={`p-3 border-2 rounded-lg text-left transition-all ${
                         formData.paymentMethod === "wave"
                           ? "border-blue-500 bg-blue-500/10 shadow-lg scale-105"
                           : "border-border hover:border-blue-500/50"
                       }`}
                     >
-                      <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
-                        RECOMMANDE
-                      </div>
                       <div className="font-bold text-foreground">Wave</div>
                       <div className="text-xs text-blue-400 font-medium">{paymentOptions.wave.number}</div>
                       <div className="text-[10px] text-success font-bold mt-1">
@@ -313,23 +330,6 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                       <div className="text-xs text-emerald-400 font-medium">{paymentOptions.moov.number}</div>
                       <div className="text-[10px] text-success font-bold mt-1">
                         Livraison: {product.deliveryWave.toLocaleString()} F
-                      </div>
-                    </button>
-
-                    {/* Paiement a la livraison */}
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, paymentMethod: "delivery" })}
-                      className={`p-3 border-2 rounded-lg text-left transition-all col-span-2 md:col-span-1 ${
-                        formData.paymentMethod === "delivery"
-                          ? "border-zinc-400 bg-zinc-500/10 shadow-lg scale-105"
-                          : "border-border hover:border-zinc-400/50"
-                      }`}
-                    >
-                      <div className="font-bold text-foreground">A la Livraison</div>
-                      <div className="text-xs text-muted-foreground">Payez quand vous recevez</div>
-                      <div className="text-[10px] text-warning font-bold mt-1">
-                        Livraison: {product.deliveryCash.toLocaleString()} F
                       </div>
                     </button>
                   </div>
