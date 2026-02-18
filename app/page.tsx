@@ -19,7 +19,7 @@ export default function Home() {
 
   const cable240w = {
     name: "Cable USB-C 240W + Support Telephone",
-    price: 10000,
+    price: 7500,
     oldPrice: 15000,
     deliveryWave: 1000,
     deliveryCash: 1500,
