@@ -5,7 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { X, Phone, MapPin, User, CheckCircle, MessageCircle } from "lucide-react"
+import { X, Phone, MapPin, User, CheckCircle, MessageCircle, Copy, Check, Smartphone } from "lucide-react"
 
 interface OrderFormProps {
   product: {
@@ -20,11 +20,46 @@ interface OrderFormProps {
 
 type PaymentMethod = "wave" | "mtn" | "orange" | "moov" | "delivery"
 
-const paymentOptions: Record<string, { name: string; number: string; color: string; ussd: string }> = {
-  wave: { name: "Wave", number: "0506007934", color: "blue", ussd: "*144*4*2*0506007934*AMOUNT#" },
-  mtn: { name: "MTN Money", number: "0505040647", color: "yellow", ussd: "*133*1*1*0505040647*AMOUNT#" },
-  orange: { name: "Orange Money", number: "0702087781", color: "orange", ussd: "*144*1*1*0702087781*AMOUNT#" },
-  moov: { name: "Moov Money", number: "0151360707", color: "emerald", ussd: "*155*1*1*0151360707*AMOUNT#" },
+const paymentOptions: Record<
+  string,
+  { name: string; number: string; icon: string; bgClass: string; borderClass: string; textClass: string; ussd: string }
+> = {
+  wave: {
+    name: "Wave",
+    number: "0506007934",
+    icon: "🔵",
+    bgClass: "bg-blue-500/10",
+    borderClass: "border-blue-500",
+    textClass: "text-blue-400",
+    ussd: "*144*4*2*0506007934*AMOUNT#",
+  },
+  mtn: {
+    name: "MTN Money",
+    number: "0505040647",
+    icon: "🟡",
+    bgClass: "bg-yellow-500/10",
+    borderClass: "border-yellow-500",
+    textClass: "text-yellow-400",
+    ussd: "*133*1*1*0505040647*AMOUNT#",
+  },
+  orange: {
+    name: "Orange Money",
+    number: "0702087781",
+    icon: "🟠",
+    bgClass: "bg-orange-500/10",
+    borderClass: "border-orange-500",
+    textClass: "text-orange-400",
+    ussd: "*144*1*1*0702087781*AMOUNT#",
+  },
+  moov: {
+    name: "Moov Money",
+    number: "0151360707",
+    icon: "🟢",
+    bgClass: "bg-emerald-500/10",
+    borderClass: "border-emerald-500",
+    textClass: "text-emerald-400",
+    ussd: "*155*1*1*0151360707*AMOUNT#",
+  },
 }
 
 function OrderForm({ product, onClose }: OrderFormProps) {
@@ -77,7 +112,26 @@ function OrderForm({ product, onClose }: OrderFormProps) {
     setFormSubmitted(true)
   }
 
+  const [copiedNumber, setCopiedNumber] = useState<string | null>(null)
+  const [copiedUssd, setCopiedUssd] = useState(false)
+
+  const selectedOption = formData.paymentMethod !== "delivery" ? paymentOptions[formData.paymentMethod] : null
+  const ussdWithAmount = selectedOption ? selectedOption.ussd.replace("AMOUNT", totalAmount.toString()) : ""
+
+  const copyToClipboard = (text: string, type: "number" | "ussd") => {
+    navigator.clipboard.writeText(text).catch(() => {})
+    if (type === "number") {
+      setCopiedNumber(text)
+      setTimeout(() => setCopiedNumber(null), 2000)
+    } else {
+      setCopiedUssd(true)
+      setTimeout(() => setCopiedUssd(false), 2000)
+    }
+  }
+
   const sendToWhatsApp = () => {
+    const paymentName = selectedOption ? selectedOption.name : "A la livraison"
+    const paymentNum = selectedOption ? selectedOption.number : ""
     const message = formData.paymentMethod === "delivery"
       ? encodeURIComponent(
           `NOUVELLE COMMANDE\n\n` +
@@ -91,13 +145,13 @@ function OrderForm({ product, onClose }: OrderFormProps) {
           `Mode de paiement: A la livraison`,
         )
       : encodeURIComponent(
-          `PAIEMENT WAVE EFFECTUE\n\n` +
+          `PAIEMENT ${paymentName.toUpperCase()} EFFECTUE\n\n` +
           `Produit: ${product.name}\n\n` +
           `Nom: ${formData.name}\n` +
           `Telephone: ${formData.phone}\n` +
           `Lieu de livraison: ${formData.location}\n\n` +
           `Montant paye: ${totalAmount.toLocaleString()} FCFA (produit + livraison)\n` +
-          `Paiement: Wave - ${paymentOptions.wave.number}\n\n` +
+          `Paiement: ${paymentName} - ${paymentNum}\n\n` +
           `J'envoie la capture d'ecran maintenant.`,
         )
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank")
@@ -148,7 +202,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                   <div className="flex justify-between text-zinc-300">
                     <span>Paiement:</span>
                     <span className="font-medium text-white">
-                      {formData.paymentMethod === "delivery" ? "A la livraison" : "Wave"}
+                      {formData.paymentMethod === "delivery" ? "A la livraison" : selectedOption?.name}
                     </span>
                   </div>
                   <div className="border-t border-zinc-600 pt-2 mt-2 flex justify-between text-lg font-bold">
@@ -239,59 +293,164 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                   <label className="block text-sm font-medium mb-3 text-foreground">
                     Choisissez votre mode de paiement *
                   </label>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, paymentMethod: "wave" })}
-                      className={`p-4 border-2 rounded-lg text-left transition-all relative ${
-                        formData.paymentMethod === "wave"
-                          ? "border-blue-500 bg-blue-500/10 shadow-lg scale-105"
-                          : "border-border hover:border-blue-500/50"
-                      }`}
-                    >
-                      <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-bold">
-                        RECOMMANDE
-                      </div>
-                      <div className="text-2xl mb-2">💳</div>
-                      <div className="font-bold text-lg text-foreground">Wave (A l'avance)</div>
-                      <div className="text-sm text-muted-foreground">Paiement securise et rapide</div>
-                      <div className="text-sm text-blue-500 font-bold mt-2">Economisez 500 FCFA sur la livraison!</div>
-                      <div className="text-xs text-success font-bold mt-1">
-                        Livraison: {product.deliveryWave.toLocaleString()} FCFA
-                      </div>
-                    </button>
 
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, paymentMethod: "delivery" })}
-                      className={`p-4 border-2 rounded-lg text-left transition-all ${
-                        formData.paymentMethod === "delivery"
-                          ? "border-blue-500 bg-blue-500/10 shadow-lg scale-105"
-                          : "border-border hover:border-blue-500/50"
-                      }`}
-                    >
-                      <Phone className="w-6 h-6 text-zinc-400 mb-2" />
-                      <div className="font-bold text-lg text-foreground">Paiement a la Livraison</div>
-                      <div className="text-sm text-muted-foreground">Payez quand vous recevez</div>
-                      <div className="text-xs text-warning font-bold mt-1">
+                  {/* Mobile Money Options */}
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    {(Object.keys(paymentOptions) as Array<keyof typeof paymentOptions>).map((key) => {
+                      const opt = paymentOptions[key]
+                      const isSelected = formData.paymentMethod === key
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, paymentMethod: key as PaymentMethod })}
+                          className={`p-3 border-2 rounded-lg text-left transition-all relative ${
+                            isSelected
+                              ? `${opt.borderClass} ${opt.bgClass} shadow-lg scale-[1.03]`
+                              : `border-border hover:${opt.borderClass}/50`
+                          }`}
+                        >
+                          {key === "wave" && (
+                            <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+                              RECOMMANDE
+                            </div>
+                          )}
+                          <div className="text-xl mb-1">{opt.icon}</div>
+                          <div className="font-bold text-sm text-foreground">{opt.name}</div>
+                          <div className="text-xs text-muted-foreground">{opt.number}</div>
+                          <div className={`text-xs font-bold mt-1 ${opt.textClass}`}>
+                            Livraison: {product.deliveryWave.toLocaleString()} FCFA
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  {/* Cash on Delivery */}
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, paymentMethod: "delivery" })}
+                    className={`w-full p-4 border-2 rounded-lg text-left transition-all ${
+                      formData.paymentMethod === "delivery"
+                        ? "border-zinc-400 bg-zinc-500/10 shadow-lg scale-[1.02]"
+                        : "border-border hover:border-zinc-500/50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Phone className="w-5 h-5 text-zinc-400" />
+                      <div>
+                        <div className="font-bold text-foreground">Paiement a la Livraison</div>
+                        <div className="text-xs text-muted-foreground">Payez quand vous recevez</div>
+                      </div>
+                      <div className="ml-auto text-xs text-warning font-bold">
                         Livraison: {product.deliveryCash.toLocaleString()} FCFA
                       </div>
-                    </button>
-                  </div>
+                    </div>
+                  </button>
                 </div>
 
-                {formData.paymentMethod === "wave" && (
-                  <Card className="p-4 bg-blue-900/20 border-blue-500/30">
-                    <p className="text-sm text-zinc-300 text-center">
-                      Envoyez <span className="font-bold text-cyan-400">{totalAmount.toLocaleString()} FCFA</span> au <span className="font-bold text-blue-400">{paymentOptions.wave.number}</span> via Wave, puis validez votre commande.
-                    </p>
-                    <Button
-                      type="button"
-                      onClick={() => openPaymentApp("wave")}
-                      className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg transition-all hover:scale-105"
-                    >
-                      Ouvrir Wave sur mon telephone
-                    </Button>
+                {/* Dynamic Payment Instructions */}
+                {formData.paymentMethod !== "delivery" && selectedOption && (
+                  <Card className={`p-5 ${selectedOption.bgClass} border ${selectedOption.borderClass}/30`}>
+                    <div className="flex flex-col gap-4">
+                      {/* Header */}
+                      <div className="text-center">
+                        <p className={`text-lg font-bold ${selectedOption.textClass}`}>
+                          {selectedOption.name}
+                        </p>
+                        <p className="text-sm text-zinc-300 mt-1">
+                          Envoyez <span className="font-bold text-cyan-400">{totalAmount.toLocaleString()} FCFA</span> au numero ci-dessous
+                        </p>
+                      </div>
+
+                      {/* Phone Number with Copy */}
+                      <div className="flex items-center justify-center gap-3 bg-zinc-900/50 rounded-lg p-3">
+                        <span className={`text-2xl font-bold font-mono ${selectedOption.textClass}`}>
+                          {selectedOption.number}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard(selectedOption.number, "number")}
+                          className="p-2 bg-zinc-700 hover:bg-zinc-600 rounded-lg transition-colors"
+                          aria-label="Copier le numero"
+                        >
+                          {copiedNumber === selectedOption.number ? (
+                            <Check className="w-4 h-4 text-green-400" />
+                          ) : (
+                            <Copy className="w-4 h-4 text-zinc-300" />
+                          )}
+                        </button>
+                      </div>
+
+                      {/* USSD Code with Copy */}
+                      <div className="bg-zinc-900/50 rounded-lg p-3">
+                        <p className="text-xs text-zinc-400 mb-2 text-center">Code USSD a composer :</p>
+                        <div className="flex items-center justify-center gap-3">
+                          <code className={`text-lg font-bold font-mono ${selectedOption.textClass}`}>
+                            {ussdWithAmount}
+                          </code>
+                          <button
+                            type="button"
+                            onClick={() => copyToClipboard(ussdWithAmount, "ussd")}
+                            className="p-2 bg-zinc-700 hover:bg-zinc-600 rounded-lg transition-colors"
+                            aria-label="Copier le code USSD"
+                          >
+                            {copiedUssd ? (
+                              <Check className="w-4 h-4 text-green-400" />
+                            ) : (
+                              <Copy className="w-4 h-4 text-zinc-300" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex flex-col gap-2">
+                        {formData.paymentMethod === "wave" ? (
+                          <>
+                            <Button
+                              type="button"
+                              onClick={() => openPaymentApp("wave")}
+                              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg transition-all hover:scale-[1.02]"
+                            >
+                              <Smartphone className="w-5 h-5 mr-2" />
+                              Ouvrir Wave directement
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => {
+                                window.location.href = `tel:${ussdWithAmount}`
+                              }}
+                              className="w-full border-blue-500/50 text-blue-400 hover:bg-blue-500/10 font-bold py-3 rounded-lg"
+                            >
+                              <Phone className="w-4 h-4 mr-2" />
+                              Composer le code USSD
+                            </Button>
+                          </>
+                        ) : (
+                          <Button
+                            type="button"
+                            onClick={() => openPaymentApp(formData.paymentMethod)}
+                            className={`w-full font-bold py-3 rounded-lg shadow-lg transition-all hover:scale-[1.02] text-white ${
+                              formData.paymentMethod === "mtn"
+                                ? "bg-yellow-600 hover:bg-yellow-700"
+                                : formData.paymentMethod === "orange"
+                                  ? "bg-orange-600 hover:bg-orange-700"
+                                  : "bg-emerald-600 hover:bg-emerald-700"
+                            }`}
+                          >
+                            <Phone className="w-5 h-5 mr-2" />
+                            Composer le code USSD automatiquement
+                          </Button>
+                        )}
+                      </div>
+
+                      {/* Info */}
+                      <p className="text-xs text-zinc-400 text-center">
+                        Apres le paiement, validez votre commande et envoyez la capture sur WhatsApp.
+                      </p>
+                    </div>
                   </Card>
                 )}
 
@@ -305,7 +464,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                     <div className="flex justify-between text-sm text-muted-foreground">
                       <span>Livraison Abidjan</span>
                       <span>
-                        {formData.paymentMethod === "wave"
+                        {isAdvancePayment
                           ? `${product.deliveryWave.toLocaleString()} FCFA`
                           : `${product.deliveryCash.toLocaleString()} FCFA`}
                       </span>
@@ -323,7 +482,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                   size="lg"
                   className="w-full bg-gradient-to-r from-brand-purple to-brand-blue hover:from-brand-purple-dark hover:to-brand-blue-dark text-white text-lg py-6 rounded-lg font-bold shadow-xl"
                 >
-                  {formData.paymentMethod === "delivery" ? "Confirmer la Commande" : "Soumettre la Commande"}
+                  {formData.paymentMethod === "delivery" ? "Confirmer la Commande" : `Valider - Paiement ${selectedOption?.name}`}
                 </Button>
 
                 <p className="text-xs text-center text-muted-foreground">
