@@ -97,7 +97,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
           `Telephone: ${formData.phone}\n` +
           `Lieu de livraison: ${formData.location}\n\n` +
           `Montant paye: ${totalAmount.toLocaleString()} FCFA (produit + livraison)\n` +
-          `Paiement: Wave - ${waveNumber}\n\n` +
+          `Paiement: Wave - ${paymentOptions.wave.number}\n\n` +
           `J'envoie la capture d'ecran maintenant.`,
         )
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank")
@@ -283,11 +283,11 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                 {formData.paymentMethod === "wave" && (
                   <Card className="p-4 bg-blue-900/20 border-blue-500/30">
                     <p className="text-sm text-zinc-300 text-center">
-                      Envoyez <span className="font-bold text-cyan-400">{totalAmount.toLocaleString()} FCFA</span> au <span className="font-bold text-blue-400">{waveNumber}</span> via Wave, puis validez votre commande.
+                      Envoyez <span className="font-bold text-cyan-400">{totalAmount.toLocaleString()} FCFA</span> au <span className="font-bold text-blue-400">{paymentOptions.wave.number}</span> via Wave, puis validez votre commande.
                     </p>
                     <Button
                       type="button"
-                      onClick={openWaveApp}
+                      onClick={() => openPaymentApp("wave")}
                       className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg transition-all hover:scale-105"
                     >
                       Ouvrir Wave sur mon telephone
