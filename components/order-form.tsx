@@ -140,9 +140,9 @@ function OrderForm({ product, onClose }: OrderFormProps) {
           `Nom: ${formData.name}\n` +
           `Telephone: ${formData.phone}\n` +
           `Lieu de livraison: ${formData.location}\n\n` +
-          `Prix produit: ${product.price.toLocaleString()} FCFA\n` +
-          `Livraison Abidjan: ${product.deliveryCash.toLocaleString()} FCFA\n` +
-          `TOTAL A PAYER: ${totalAmount.toLocaleString()} FCFA\n\n` +
+          `Prix produit: ${formatPrice(product.price)} FCFA\n` +
+          `Livraison Abidjan: ${formatPrice(product.deliveryCash)} FCFA\n` +
+          `TOTAL A PAYER: ${formatPrice(totalAmount)} FCFA\n\n` +
           `Mode de paiement: A la livraison`,
         )
       : encodeURIComponent(
@@ -151,7 +151,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
           `Nom: ${formData.name}\n` +
           `Telephone: ${formData.phone}\n` +
           `Lieu de livraison: ${formData.location}\n\n` +
-          `Montant paye: ${totalAmount.toLocaleString()} FCFA (produit + livraison)\n` +
+          `Montant paye: ${formatPrice(totalAmount)} FCFA (produit + livraison)\n` +
           `Paiement: ${paymentName} - ${paymentNum}\n\n` +
           `J'envoie la capture d'ecran maintenant.`,
         )

@@ -141,7 +141,7 @@ function CheckoutContent() {
                   <p className="font-medium text-white">{item.product.name}</p>
                   <p className="text-sm text-zinc-400">Quantite: {item.quantity}</p>
                 </div>
-                <p className="font-bold text-cyan-400">{(item.product.price * item.quantity).toLocaleString()} FCFA</p>
+                <p className="font-bold text-cyan-400">{formatPrice(item.product.price * item.quantity)} FCFA</p>
               </div>
             ))}
           </div>
@@ -149,17 +149,17 @@ function CheckoutContent() {
           <div className="border-t border-zinc-600 mt-4 pt-4 space-y-2">
             <div className="flex justify-between text-zinc-300">
               <span>Sous-total:</span>
-              <span className="text-white">{subtotal.toLocaleString()} FCFA</span>
+              <span className="text-white">{formatPrice(subtotal)} FCFA</span>
             </div>
             {discount > 0 && (
               <div className="flex justify-between text-green-400">
                 <span>Coupon ({coupon}):</span>
-                <span>-{discount.toLocaleString()} FCFA</span>
+                <span>-{formatPrice(discount)} FCFA</span>
               </div>
             )}
             <div className="flex justify-between text-xl font-bold pt-2 border-t border-zinc-600">
               <span className="text-white">Total:</span>
-              <span className="text-cyan-400">{total.toLocaleString()} FCFA</span>
+              <span className="text-cyan-400">{formatPrice(total)} FCFA</span>
             </div>
           </div>
         </Card>
