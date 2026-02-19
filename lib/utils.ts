@@ -4,3 +4,11 @@ import { twMerge } from 'tailwind-merge'
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+/**
+ * Formats a number with dot separators to avoid hydration mismatches
+ * caused by toLocaleString() producing different results on server vs client.
+ */
+export function formatPrice(value: number): string {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
