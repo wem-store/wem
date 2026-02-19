@@ -20,6 +20,10 @@ interface OrderFormProps {
 
 type PaymentMethod = "wave" | "mtn" | "orange" | "moov" | "delivery"
 
+function formatPrice(value: number): string {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+}
+
 const paymentOptions: Record<string, { name: string; number: string; color: string; ussd: string }> = {
   wave: { name: "Wave", number: "0506007934", color: "blue", ussd: "*144*4*2*0506007934*AMOUNT#" },
   mtn: { name: "MTN Money", number: "0505040647", color: "yellow", ussd: "*133*1*1*0505040647*AMOUNT#" },
@@ -72,15 +76,13 @@ function OrderForm({ product, onClose }: OrderFormProps) {
       return
     }
 
-
-
     setFormSubmitted(true)
   }
 
   const sendToWhatsApp = () => {
     const selectedOption = paymentOptions[formData.paymentMethod]
-    const paymentLabel = formData.paymentMethod === "delivery" 
-      ? "A la livraison" 
+    const paymentLabel = formData.paymentMethod === "delivery"
+      ? "A la livraison"
       : `${selectedOption.name} - ${selectedOption.number}`
 
     const message = formData.paymentMethod === "delivery"
@@ -90,9 +92,9 @@ function OrderForm({ product, onClose }: OrderFormProps) {
           `Nom: ${formData.name}\n` +
           `Telephone: ${formData.phone}\n` +
           `Lieu de livraison: ${formData.location}\n\n` +
-          `Prix produit: ${product.price.toLocaleString()} FCFA\n` +
-          `Livraison Abidjan: ${product.deliveryCash.toLocaleString()} FCFA\n` +
-          `TOTAL A PAYER: ${totalAmount.toLocaleString()} FCFA\n\n` +
+          `Prix produit: ${formatPrice(product.price)} FCFA\n` +
+          `Livraison Abidjan: ${formatPrice(product.deliveryCash)} FCFA\n` +
+          `TOTAL A PAYER: ${formatPrice(totalAmount)} FCFA\n\n` +
           `Mode de paiement: A la livraison`,
         )
       : encodeURIComponent(
@@ -101,7 +103,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
           `Nom: ${formData.name}\n` +
           `Telephone: ${formData.phone}\n` +
           `Lieu de livraison: ${formData.location}\n\n` +
-          `Montant paye: ${totalAmount.toLocaleString()} FCFA (produit + livraison)\n` +
+          `Montant paye: ${formatPrice(totalAmount)} FCFA (produit + livraison)\n` +
           `Paiement: ${paymentLabel}\n\n` +
           `J'envoie la capture d'ecran maintenant.`,
         )
@@ -121,25 +123,24 @@ function OrderForm({ product, onClose }: OrderFormProps) {
 
         <div className="p-8">
           {formSubmitted ? (
-            /* Ecran de confirmation avec bouton WhatsApp */
             <div className="text-center py-8">
               <div className="w-20 h-20 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle className="w-12 h-12 text-success" />
               </div>
-              <h2 className="text-3xl font-bold mb-4 text-foreground">Commande Validee!</h2>
+              <h2 className="text-3xl font-bold mb-4 text-foreground">{"Commande Valid\u00e9e!"}</h2>
               <p className="text-muted-foreground mb-6">
-                Vos informations ont ete enregistrees. Cliquez sur le bouton ci-dessous pour finaliser votre commande sur WhatsApp.
+                {"Vos informations ont \u00e9t\u00e9 enregistr\u00e9es. Cliquez sur le bouton ci-dessous pour finaliser votre commande sur WhatsApp."}
               </p>
 
               <Card className="p-6 bg-zinc-800/50 border-zinc-700 mb-6 text-left">
-                <h3 className="font-bold text-lg mb-4 text-white">Recapitulatif:</h3>
+                <h3 className="font-bold text-lg mb-4 text-white">{"R\u00e9capitulatif:"}</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between text-zinc-300">
                     <span>Nom:</span>
                     <span className="font-medium text-white">{formData.name}</span>
                   </div>
                   <div className="flex justify-between text-zinc-300">
-                    <span>Telephone:</span>
+                    <span>{"T\u00e9l\u00e9phone:"}</span>
                     <span className="font-medium text-white">{formData.phone}</span>
                   </div>
                   <div className="flex justify-between text-zinc-300">
@@ -158,7 +159,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                   </div>
                   <div className="border-t border-zinc-600 pt-2 mt-2 flex justify-between text-lg font-bold">
                     <span className="text-white">TOTAL:</span>
-                    <span className="text-cyan-400">{totalAmount.toLocaleString()} FCFA</span>
+                    <span className="text-cyan-400">{formatPrice(totalAmount)} FCFA</span>
                   </div>
                 </div>
               </Card>
@@ -173,7 +174,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
               </Button>
 
               <p className="text-xs text-muted-foreground mt-4">
-                Vous allez etre redirige vers WhatsApp avec toutes vos informations de commande.
+                {"Vous allez \u00eatre redirig\u00e9 vers WhatsApp avec toutes vos informations de commande."}
               </p>
 
               <Button
@@ -185,13 +186,11 @@ function OrderForm({ product, onClose }: OrderFormProps) {
               </Button>
             </div>
           ) : (
-            /* Formulaire de commande */
             <div>
               <h2 className="text-4xl font-bold mb-2 text-foreground">{product.name}</h2>
               <p className="text-muted-foreground mb-8">Remplissez le formulaire pour finaliser votre commande</p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name */}
                 <div>
                   <label className="block text-sm font-medium mb-2 text-foreground">
                     <User className="w-4 h-4 inline mr-2" />
@@ -207,11 +206,10 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                   />
                 </div>
 
-                {/* Phone */}
                 <div>
                   <label className="block text-sm font-medium mb-2 text-foreground">
                     <Phone className="w-4 h-4 inline mr-2" />
-                    Numéro de Téléphone *
+                    {"Num\u00e9ro de T\u00e9l\u00e9phone *"}
                   </label>
                   <input
                     type="tel"
@@ -223,7 +221,6 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                   />
                 </div>
 
-                {/* Location */}
                 <div>
                   <label className="block text-sm font-medium mb-2 text-foreground">
                     <MapPin className="w-4 h-4 inline mr-2" />
@@ -235,17 +232,15 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                     className="w-full px-4 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue bg-background text-foreground"
-                    placeholder="Ex: Cocody, Angré 7e tranche"
+                    placeholder={"Ex: Cocody, Angr\u00e9 7e tranche"}
                   />
                 </div>
 
-                {/* Payment Method */}
                 <div>
                   <label className="block text-sm font-medium mb-3 text-foreground">
                     Choisissez votre mode de paiement *
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {/* Paiement a la livraison - RECOMMANDE */}
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, paymentMethod: "delivery" })}
@@ -256,16 +251,15 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                       }`}
                     >
                       <div className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
-                        RECOMMANDE
+                        {"RECOMMAND\u00c9"}
                       </div>
-                      <div className="font-bold text-lg text-foreground">Paiement a la Livraison</div>
+                      <div className="font-bold text-lg text-foreground">{"Paiement \u00e0 la Livraison"}</div>
                       <div className="text-xs text-muted-foreground">Payez quand vous recevez votre commande</div>
                       <div className="text-xs text-green-400 font-bold mt-1">
-                        Livraison: {product.deliveryCash.toLocaleString()} FCFA
+                        Livraison: {formatPrice(product.deliveryCash)} FCFA
                       </div>
                     </button>
 
-                    {/* Wave */}
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, paymentMethod: "wave" })}
@@ -278,11 +272,10 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                       <div className="font-bold text-foreground">Wave</div>
                       <div className="text-xs text-blue-400 font-medium">{paymentOptions.wave.number}</div>
                       <div className="text-[10px] text-success font-bold mt-1">
-                        Livraison: {product.deliveryWave.toLocaleString()} F
+                        Livraison: {formatPrice(product.deliveryWave)} F
                       </div>
                     </button>
 
-                    {/* MTN Money */}
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, paymentMethod: "mtn" })}
@@ -295,11 +288,10 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                       <div className="font-bold text-foreground">MTN Money</div>
                       <div className="text-xs text-yellow-400 font-medium">{paymentOptions.mtn.number}</div>
                       <div className="text-[10px] text-success font-bold mt-1">
-                        Livraison: {product.deliveryWave.toLocaleString()} F
+                        Livraison: {formatPrice(product.deliveryWave)} F
                       </div>
                     </button>
 
-                    {/* Orange Money */}
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, paymentMethod: "orange" })}
@@ -312,11 +304,10 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                       <div className="font-bold text-foreground">Orange Money</div>
                       <div className="text-xs text-orange-400 font-medium">{paymentOptions.orange.number}</div>
                       <div className="text-[10px] text-success font-bold mt-1">
-                        Livraison: {product.deliveryWave.toLocaleString()} F
+                        Livraison: {formatPrice(product.deliveryWave)} F
                       </div>
                     </button>
 
-                    {/* Moov Money */}
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, paymentMethod: "moov" })}
@@ -329,18 +320,17 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                       <div className="font-bold text-foreground">Moov Money</div>
                       <div className="text-xs text-emerald-400 font-medium">{paymentOptions.moov.number}</div>
                       <div className="text-[10px] text-success font-bold mt-1">
-                        Livraison: {product.deliveryWave.toLocaleString()} F
+                        Livraison: {formatPrice(product.deliveryWave)} F
                       </div>
                     </button>
                   </div>
                 </div>
 
-                {/* Instructions de paiement mobile */}
                 {isAdvancePayment && (
                   <Card className="p-4 bg-zinc-800/50 border-zinc-600">
                     <p className="text-sm text-zinc-300 text-center mb-3">
-                      Envoyez <span className="font-bold text-cyan-400">{totalAmount.toLocaleString()} FCFA</span> au{" "}
-                      <span className="font-bold text-white">{paymentOptions[formData.paymentMethod]?.number}</span> via{" "}
+                      {"Envoyez "}<span className="font-bold text-cyan-400">{formatPrice(totalAmount)} FCFA</span>{" au "}
+                      <span className="font-bold text-white">{paymentOptions[formData.paymentMethod]?.number}</span>{" via "}
                       <span className="font-bold text-white">{paymentOptions[formData.paymentMethod]?.name}</span>
                     </p>
                     <div className="bg-zinc-900 rounded-lg p-3 mb-3 text-center">
@@ -365,28 +355,27 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                 )}
 
                 <Card className="p-6 bg-brand-purple-light/10 border-brand-purple/30">
-                  <h3 className="font-bold text-lg mb-4 text-foreground">Récapitulatif de la Commande</h3>
+                  <h3 className="font-bold text-lg mb-4 text-foreground">{"R\u00e9capitulatif de la Commande"}</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between text-foreground">
                       <span>{product.name}</span>
-                      <span className="font-bold">{product.price.toLocaleString()} FCFA</span>
+                      <span className="font-bold">{formatPrice(product.price)} FCFA</span>
                     </div>
                     <div className="flex justify-between text-sm text-muted-foreground">
                       <span>Livraison Abidjan</span>
                       <span>
                         {isAdvancePayment
-                          ? `${product.deliveryWave.toLocaleString()} FCFA`
-                          : `${product.deliveryCash.toLocaleString()} FCFA`}
+                          ? `${formatPrice(product.deliveryWave)} FCFA`
+                          : `${formatPrice(product.deliveryCash)} FCFA`}
                       </span>
                     </div>
                     <div className="border-t-2 border-brand-purple/30 pt-2 mt-2 flex justify-between text-xl font-bold text-foreground">
                       <span>TOTAL</span>
-                      <span className="text-brand-purple">{totalAmount.toLocaleString()} FCFA</span>
+                      <span className="text-brand-purple">{formatPrice(totalAmount)} FCFA</span>
                     </div>
                   </div>
                 </Card>
 
-                {/* Submit Button */}
                 <Button
                   type="submit"
                   size="lg"
@@ -396,7 +385,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                 </Button>
 
                 <p className="text-xs text-center text-muted-foreground">
-                  En commandant, vous acceptez nos conditions de vente. Livraison sous 24-48h à Abidjan.
+                  {"En commandant, vous acceptez nos conditions de vente. Livraison sous 24-48h \u00e0 Abidjan."}
                 </p>
               </form>
             </div>

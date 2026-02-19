@@ -29,9 +29,9 @@ export function FacebookPixel() {
     const FB_PIXEL_ID = "1037867975214900"
 
     // Initialisation du pixel Facebook
-    ;((f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) => {
+    ;(function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
       if (f.fbq) return
-      n = f.fbq = () => {
+      n = f.fbq = function () {
         n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)
       }
       if (!f._fbq) f._fbq = n

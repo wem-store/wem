@@ -61,7 +61,7 @@ export default function WaveQRModal({ amount, productName, onClose }: WaveQRModa
           {/* Amount */}
           <div className="bg-blue-800/50 rounded-xl p-4">
             <p className="text-blue-200 text-sm mb-1">Montant a payer</p>
-            <p className="text-4xl font-bold text-white">{amount.toLocaleString()} FCFA</p>
+            <p className="text-4xl font-bold text-white">{amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} FCFA</p>
           </div>
 
           {/* QR Code */}
@@ -104,7 +104,7 @@ export default function WaveQRModal({ amount, productName, onClose }: WaveQRModa
             <ol className="text-blue-200 space-y-1 list-decimal list-inside">
               <li>Ouvrez votre application Wave</li>
               <li>Scannez le QR code ci-dessus</li>
-              <li>Ou envoyez {amount.toLocaleString()} FCFA au {waveNumber}</li>
+              <li>Ou envoyez {amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} FCFA au {waveNumber}</li>
               <li>Envoyez la capture de paiement sur WhatsApp</li>
             </ol>
           </div>
@@ -125,7 +125,7 @@ export default function WaveQRModal({ amount, productName, onClose }: WaveQRModa
               className="w-full bg-green-600 hover:bg-green-500 border-green-500 text-white py-6 text-lg font-bold rounded-full"
             >
               <a
-                href={`https://wa.me/2250506007934?text=${encodeURIComponent(`Bonjour WEM-STORE!\n\nJe viens d'effectuer un paiement Wave de ${amount.toLocaleString()} FCFA pour:\n${productName}\n\nJe vous envoie la capture d'écran.`)}`}
+                href={`https://wa.me/2250506007934?text=${encodeURIComponent(`Bonjour WEM-STORE!\n\nJe viens d'effectuer un paiement Wave de ${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} FCFA pour:\n${productName}\n\nJe vous envoie la capture d'écran.`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
