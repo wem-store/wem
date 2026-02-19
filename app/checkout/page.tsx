@@ -8,6 +8,7 @@ import { ShoppingCart, ArrowLeft } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import OrderForm from "@/components/order-form"
+import { formatPrice } from "@/lib/utils"
 
 const PRODUCTS: Record<string, { name: string; price: number; oldPrice: number; deliveryWave: number; deliveryCash: number }> = {
   "cable-240w": {

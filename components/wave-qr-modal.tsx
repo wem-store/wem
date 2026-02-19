@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { X, CreditCard, Phone, Copy, Check } from "lucide-react"
 import QRCode from "react-qr-code"
+import { formatPrice } from "@/lib/utils"
 
 interface WaveQRModalProps {
   amount: number

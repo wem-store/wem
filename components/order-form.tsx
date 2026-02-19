@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { X, Phone, MapPin, User, CheckCircle, MessageCircle, Copy, Check, Smartphone } from "lucide-react"
+import { formatPrice } from "@/lib/utils"
 
 interface OrderFormProps {
   product: {
@@ -207,7 +208,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                   </div>
                   <div className="border-t border-zinc-600 pt-2 mt-2 flex justify-between text-lg font-bold">
                     <span className="text-white">TOTAL:</span>
-                    <span className="text-cyan-400">{totalAmount.toLocaleString()} FCFA</span>
+                    <span className="text-cyan-400">{formatPrice(totalAmount)} FCFA</span>
                   </div>
                 </div>
               </Card>
@@ -314,7 +315,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                         <div className="text-xs text-muted-foreground">Payez quand vous recevez</div>
                       </div>
                       <div className="ml-auto text-xs text-warning font-bold">
-                        Livraison: {product.deliveryCash.toLocaleString()} FCFA
+                        Livraison: {formatPrice(product.deliveryCash)} FCFA
                       </div>
                     </div>
                   </button>
@@ -339,7 +340,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                           <div className="font-bold text-sm text-foreground">{opt.name}</div>
                           <div className="text-xs text-muted-foreground">{opt.number}</div>
                           <div className={`text-xs font-bold mt-1 ${opt.textClass}`}>
-                            Livraison: {product.deliveryWave.toLocaleString()} FCFA
+                            Livraison: {formatPrice(product.deliveryWave)} FCFA
                           </div>
                         </button>
                       )
@@ -357,7 +358,7 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                           {selectedOption.name}
                         </p>
                         <p className="text-sm text-zinc-300 mt-1">
-                          Envoyez <span className="font-bold text-cyan-400">{totalAmount.toLocaleString()} FCFA</span> au numero ci-dessous
+                          Envoyez <span className="font-bold text-cyan-400">{formatPrice(totalAmount)} FCFA</span> au numero ci-dessous
                         </p>
                       </div>
 
@@ -457,19 +458,19 @@ function OrderForm({ product, onClose }: OrderFormProps) {
                   <div className="space-y-2">
                     <div className="flex justify-between text-foreground">
                       <span>{product.name}</span>
-                      <span className="font-bold">{product.price.toLocaleString()} FCFA</span>
+                      <span className="font-bold">{formatPrice(product.price)} FCFA</span>
                     </div>
                     <div className="flex justify-between text-sm text-muted-foreground">
                       <span>Livraison Abidjan</span>
                       <span>
                         {isAdvancePayment
-                          ? `${product.deliveryWave.toLocaleString()} FCFA`
-                          : `${product.deliveryCash.toLocaleString()} FCFA`}
+                          ? `${formatPrice(product.deliveryWave)} FCFA`
+                          : `${formatPrice(product.deliveryCash)} FCFA`}
                       </span>
                     </div>
                     <div className="border-t-2 border-brand-purple/30 pt-2 mt-2 flex justify-between text-xl font-bold text-foreground">
                       <span>TOTAL</span>
-                      <span className="text-brand-purple">{totalAmount.toLocaleString()} FCFA</span>
+                      <span className="text-brand-purple">{formatPrice(totalAmount)} FCFA</span>
                     </div>
                   </div>
                 </Card>

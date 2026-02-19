@@ -7,6 +7,7 @@ import { Zap, Shield, CreditCard, Smartphone, Truck, Phone, X } from "lucide-rea
 import { useState } from "react"
 import OrderForm from "@/components/order-form"
 import PromoMarquee from "@/components/promo-marquee"
+import { formatPrice } from "@/lib/utils"
 
 export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<{
@@ -108,11 +109,11 @@ export default function Home() {
               <div className="flex justify-center items-center gap-6 flex-wrap">
                 <div>
                   <span className="text-2xl line-through text-zinc-400">
-                    {cable240w.oldPrice.toLocaleString()} FCFA
+                    {formatPrice(cable240w.oldPrice)} FCFA
                   </span>
                 </div>
                 <div>
-                  <span className="text-4xl font-bold text-cyan-400">{cable240w.price.toLocaleString()} FCFA</span>
+                  <span className="text-4xl font-bold text-cyan-400">{formatPrice(cable240w.price)} FCFA</span>
                 </div>
               </div>
             </div>
@@ -215,11 +216,11 @@ export default function Home() {
                 <div className="flex justify-center items-center gap-6 flex-wrap">
                   <div>
                     <span className="text-2xl line-through text-zinc-400">
-                      {adapter5in1.oldPrice.toLocaleString()} FCFA
+                      {formatPrice(adapter5in1.oldPrice)} FCFA
                     </span>
                   </div>
                   <div>
-                    <span className="text-4xl font-bold text-cyan-400">{adapter5in1.price.toLocaleString()} FCFA</span>
+                    <span className="text-4xl font-bold text-cyan-400">{formatPrice(adapter5in1.price)} FCFA</span>
                   </div>
                 </div>
               </div>
