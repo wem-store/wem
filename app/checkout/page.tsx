@@ -107,7 +107,7 @@ function CheckoutContent() {
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/images/gemini-generated-image-envbfyenvbfyenvb.png"
+              src="/images/gemini-generated-image-envbfyenvbfyenvb.jpg"
               alt="WEM-STORE Logo"
               width={40}
               height={40}
