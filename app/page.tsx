@@ -49,7 +49,7 @@ export default function Home() {
           <div className="container mx-auto px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Image
-                src="/images/gemini-generated-image-envbfyenvbfyenvb.png"
+                src="/images/gemini-generated-image-envbfyenvbfyenvb.jpg"
                 alt="WEM-STORE Logo"
                 width={50}
                 height={50}
@@ -145,7 +145,7 @@ export default function Home() {
                 <Card className="overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:border-cyan-400 border-2 border-cyan-500/50">
                   <div className="relative">
                     <Image
-                      src="/images/alibaba93b99b744ec6fd2fd6a8fa6eca60f840-original-1.png"
+                      src="/images/alibaba93b99b744ec6fd2fd6a8fa6eca60f840-original-1.jpg"
                       alt="Type-C to Lightning - Compatible iPhone 6 \u00e0 14 Pro Max"
                       width={800}
                       height={800}
@@ -164,10 +164,10 @@ export default function Home() {
               </div>
 
               {[
-                { src: "/images/1766778459643-20-20copie.png", desc: "C\u00e2ble tress\u00e9 avec serre-c\u00e2ble et support m\u00e9tal" },
-                { src: "/images/1766778407224.png", desc: "Support t\u00e9l\u00e9phone pliable int\u00e9gr\u00e9" },
-                { src: "/images/1766778442891.png", desc: "C\u00e2ble haute r\u00e9sistance 240W" },
-                { src: "/images/1766778452804.png", desc: "Compatible tous appareils" },
+                { src: "/images/1766778459643-20-20copie.jpg", desc: "C\u00e2ble tress\u00e9 avec serre-c\u00e2ble et support m\u00e9tal" },
+                { src: "/images/1766778407224.jpg", desc: "Support t\u00e9l\u00e9phone pliable int\u00e9gr\u00e9" },
+                { src: "/images/1766778442891.jpg", desc: "C\u00e2ble haute r\u00e9sistance 240W" },
+                { src: "/images/1766778452804.jpg", desc: "Compatible tous appareils" },
               ].map((image, i) => (
                 <div key={i} className="group cursor-pointer" onClick={() => setSelectedProduct(cable240w)}>
                   <Card className="overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:border-cyan-400">
@@ -230,12 +230,12 @@ export default function Home() {
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {[
-                  { src: "/images/1767547079318.png", desc: "Design compact - Tous les 5 adaptateurs int\u00e9gr\u00e9s" },
-                  { src: "/images/1767547011225.png", desc: "Kit complet avec c\u00e2bles et adaptateurs" },
-                  { src: "/images/1767549447648.png", desc: "Compatible avec tous vos appareils Apple & Android" },
-                  { src: "/images/1767547143112.png", desc: "Solution 6-en-1 avec bo\u00eetier de rangement SIM/cartes" },
-                  { src: "/images/cache-2.png", desc: "Adaptateur compact 5-en-1 avec lecteur SIM" },
-                  { src: "/images/cacje4.png", desc: "Charge rapide 60W pour tous appareils" },
+                  { src: "/images/1767547079318.jpg", desc: "Design compact - Tous les 5 adaptateurs int\u00e9gr\u00e9s" },
+                  { src: "/images/1767547011225.jpg", desc: "Kit complet avec c\u00e2bles et adaptateurs" },
+                  { src: "/images/1767549447648.jpg", desc: "Compatible avec tous vos appareils Apple & Android" },
+                  { src: "/images/1767547143112.jpg", desc: "Solution 6-en-1 avec bo\u00eetier de rangement SIM/cartes" },
+                  { src: "/images/cache-2.jpg", desc: "Adaptateur compact 5-en-1 avec lecteur SIM" },
+                  { src: "/images/cacje4.jpg", desc: "Charge rapide 60W pour tous appareils" },
                 ].map((image, i) => (
                   <div key={i} className="group cursor-pointer" onClick={() => setSelectedProduct(adapter5in1)}>
                     <Card className="overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:border-cyan-400">
@@ -552,7 +552,7 @@ export default function Home() {
             <div className="flex flex-col items-center gap-6 mb-8">
               <div className="flex items-center gap-3">
                 <Image
-                  src="/images/gemini-generated-image-envbfyenvbfyenvb.png"
+                  src="/images/gemini-generated-image-envbfyenvbfyenvb.jpg"
                   alt="WEM-STORE Logo"
                   width={60}
                   height={60}
