@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Zap, Shield, CreditCard, Smartphone, Truck, Phone, X } from "lucide-react"
+import { Zap, Shield, CreditCard, Smartphone, Truck, Phone, X, Share2 } from "lucide-react"
 import { useState } from "react"
 import OrderForm from "@/components/order-form"
 import PromoMarquee from "@/components/promo-marquee"
@@ -569,7 +569,6 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-center text-zinc-400 text-sm">
-              {/* Contact Information */}
               <div>
                 <span className="block mb-2">Contactez-nous</span>
                 <button onClick={() => setSelectedProduct(cable240w)} className="block mb-2 hover:text-cyan-400 transition-colors">
@@ -579,32 +578,28 @@ export default function Home() {
                 <span className="block">{"📍 Abidjan, C\u00f4te d\u2019Ivoire"}</span>
               </div>
 
-              {/* Links */}
               <div>
-                <span className="block mb-2">Liens Utiles</span>
-                <a href="#" className="block mb-2">
-                  {"Politique de Confidentialit\u00e9"}
-                </a>
-                <a href="#" className="block mb-2">
-                  {"Conditions G\u00e9n\u00e9rales"}
-                </a>
-                <a href="#" className="block mb-2">
-                  A Propos de Nous
-                </a>
-              </div>
-
-              {/* Social Media */}
-              <div>
-                <span className="block mb-2">Suivez-nous</span>
-                <a href="#" className="block mb-2">
-                  Facebook
-                </a>
-                <a href="#" className="block mb-2">
-                  Instagram
-                </a>
-                <a href="#" className="block mb-2">
-                  Twitter
-                </a>
+                <span className="block mb-3">Partagez avec vos proches</span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({
+                        title: "WEM-STORE - Accessoires Premium",
+                        text: "D\u00e9couvrez les accessoires tech de qualit\u00e9 chez WEM-STORE. Livraison rapide \u00e0 Abidjan!",
+                        url: window.location.href,
+                      })
+                    } else {
+                      navigator.clipboard.writeText(window.location.href)
+                      alert("Lien copi\u00e9 dans le presse-papier!")
+                    }
+                  }}
+                  className="border-brand-blue/40 text-brand-blue-light hover:bg-brand-blue/10"
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Republier
+                </Button>
               </div>
             </div>
 
